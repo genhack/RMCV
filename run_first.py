@@ -6,10 +6,24 @@ from scripts import JobDescriptionProcessor, ResumeProcessor
 from scripts.utils import get_filenames_from_dir, init_logging_config
 
 init_logging_config()
-
+'''
 PROCESSED_RESUMES_PATH = "Data/Processed/Resumes"
 PROCESSED_JOB_DESCRIPTIONS_PATH = "Data/Processed/JobDescription"
+'''
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+PROCESSED_DATA_PATH = os.path.join(script_dir, "Data", "Processed")
+PROCESSED_RESUMES_PATH = os.path.join(PROCESSED_DATA_PATH, "Resumes")
+PROCESSED_JOB_DESCRIPTIONS_PATH = os.path.join(
+    PROCESSED_DATA_PATH, "JobDescription"
+)
+
+# check if processed data directory exists
+if not os.path.exists(PROCESSED_DATA_PATH):
+    os.makedirs(PROCESSED_DATA_PATH)
+    os.makedirs(PROCESSED_RESUMES_PATH)
+    os.makedirs(PROCESSED_JOB_DESCRIPTIONS_PATH)
+    logging.info("Created necessary directories.")
 
 def read_json(filename):
     with open(filename) as f:
@@ -39,7 +53,7 @@ try:
 
     file_names = get_filenames_from_dir("Data/Resumes")
     logging.info("Reading from Data/Resumes is now complete.")
-except:
+except Exception:
     # Exit the program if there are no resumes.
     logging.error("There are no resumes present in the specified folder.")
     logging.error("Exiting from the program.")
@@ -61,7 +75,7 @@ try:
 
     file_names = get_filenames_from_dir("Data/JobDescription")
     logging.info("Reading from Data/JobDescription is now complete.")
-except:
+except Exception:
     # Exit the program if there are no resumes.
     logging.error("There are no job-description present in the specified folder.")
     logging.error("Exiting from the program.")
